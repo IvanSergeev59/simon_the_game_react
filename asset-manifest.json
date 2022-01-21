@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/simon-the-game-react/static/css/main.46b66078.css",
+    "main.js": "/simon-the-game-react/static/js/main.9239859d.js",
+    "index.html": "/simon-the-game-react/index.html",
+    "main.46b66078.css.map": "/simon-the-game-react/static/css/main.46b66078.css.map",
+    "main.9239859d.js.map": "/simon-the-game-react/static/js/main.9239859d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.46b66078.css",
+    "static/js/main.9239859d.js"
+  ]
+}
