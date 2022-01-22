@@ -1,13 +1,19 @@
 {
   "files": {
     "main.css": "/simon_the_game_react/static/css/main.c5df941e.css",
-    "main.js": "/simon_the_game_react/static/js/main.9239859d.js",
+    "main.js": "/simon_the_game_react/static/js/main.caabf7ac.js",
+    "static/js/845.573dcb16.chunk.js": "/simon_the_game_react/static/js/845.573dcb16.chunk.js",
+    "static/media/sound2.mp3": "/simon_the_game_react/static/media/sound2.c49c47f28c5d2b00356e.mp3",
+    "static/media/sound3.mp3": "/simon_the_game_react/static/media/sound3.6a4ba4ebc3af41ecf1ca.mp3",
+    "static/media/sound4.mp3": "/simon_the_game_react/static/media/sound4.5b7c8f190a4cc8e72b4c.mp3",
+    "static/media/sound1.mp3": "/simon_the_game_react/static/media/sound1.18ee57c90aa432dafedb.mp3",
     "index.html": "/simon_the_game_react/index.html",
     "main.c5df941e.css.map": "/simon_the_game_react/static/css/main.c5df941e.css.map",
-    "main.9239859d.js.map": "/simon_the_game_react/static/js/main.9239859d.js.map"
+    "main.caabf7ac.js.map": "/simon_the_game_react/static/js/main.caabf7ac.js.map",
+    "845.573dcb16.chunk.js.map": "/simon_the_game_react/static/js/845.573dcb16.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c5df941e.css",
-    "static/js/main.9239859d.js"
+    "static/js/main.caabf7ac.js"
   ]
 }
