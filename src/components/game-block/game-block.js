@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { useState } from "react";
 import { writeListClicks,changeDifficulty, finishGame, clearWrongMoveText, clearSuccessText, showSuccessText } from "../../actions";
@@ -6,93 +6,68 @@ import useSound from 'use-sound';
 import {sound1, sound2, sound3, sound4} from '../sounds';
 import RoundCount from "../round-count";
 import DifficultyLevel from "../difficulty-level";
-console.log('render')
+import StartButton from '../start-button';
 
-const GameBlockContainer =(props) => {
-    console.log('render mainBlock')
+const GameBlockContainer = (props) => {
+    //const of clicks colours
     const [basedRed, onClickRed] = useState('');
     const [basedGreen, onClickGreen] = useState('');
     const [basedBlue, onClickBlue] = useState('');
     const [basedYellow, onClickYellow] = useState('');
+
+    // number of current round
     const [round, setNextRound] = useState(1)
-    const [listId, updateListId] = useState([]);
+
+    //number of current move
     const [currentMoveNumber, nextMoveNumber] = useState(0);
+
     const [clicksAvailable, setClicksAvailable] = useState('');
     const [statusOfButton, changeStatusOfButton] = useState('ready');
     const [buttonDisabled, setButtonDisabled] = useState(false);
+    //the game in in progress
     const [duringGame, setDuringGame] = useState(false);
+
     const [lastRound, setLastRound] = useState(0);
     const [playSound1] = useSound(sound1);
     const [playSound2] = useSound(sound2);
     const [playSound3] = useSound(sound3);
     const [playSound4] = useSound(sound4);
 
-
-   const {difficulty, difficultyCheckbox, listClicks, finishText, successText} = props.gameParams;
-   const {writingListClicks, onChangeDifficulty,  clearWrongMoveText, showSuccessText,  clearSuccessText, wrongMove} = props;
-  
+    const {difficulty, difficultyCheckbox, listClicks } = props.gameParams;
+    const {writingListClicks, onChangeDifficulty,  clearWrongMoveText, showSuccessText,  clearSuccessText, wrongMove} = props;
+    let listOfClicks = [];
 
     // user press start, creating random list of clicks 
-    function onButtonClick() {
+    const onStartButtonClick = () => {
+        
         let currentRound = round;
-        if(duringGame) { setNextRound(1);currentRound=1 }
+        //list of clicks to null
+        let newListofClicks = [];
+        listOfClicks = [];      
+        if(duringGame) { setNextRound(1); currentRound=1 }
 
+        //change button text
         changeStatusOfButton('in process');
         //hide text of success prev round
         clearSuccessText();
-        // 
-        updateListId([]);
+        
         //do button inactive during writing random clicks
         setButtonDisabled(true);
         // update number of current move
         nextMoveNumber(0);
-        let i = 0;
+        
         // hide text of wrong move
-        clearWrongMoveText()
-        //a little pause after click on the button
-        function outClicked(fu){
-            setTimeout(() => fu(''), difficulty-200)
-        }
-        let newListId = [];
+        clearWrongMoveText()        
 
         //create function with interval between random clicks
         let createClicksList =  setInterval( () => {
-            let randomNumber = Math.floor(Math.random() * (4)) + 1;
+            let randomNumber = String(Math.floor(Math.random() * (4)) + 1);
 
-            switch(randomNumber) {
-                // firstly - add additional class, then add id to arr, then remove additional class
-                case(2):
-                    onClickRed('red-clicked');
-                    newListId.push(...'2');
-                    outClicked(onClickRed);
-                    playSound1()
-                    break;
-                case(1):
-                    onClickBlue('blue-clicked');
-                    newListId.push(...'1');
-                    playSound2()
-                    outClicked(onClickBlue)
-                    break;
-                case(3):
-                    onClickYellow('yellow-clicked');
-                    newListId.push(...'3');
-                    playSound3()
-                    outClicked(onClickYellow)
-                    break;
-                case(4):
-                    onClickGreen('green-clicked');
-                    newListId.push(...'4');
-                    playSound4()
-                    outClicked(onClickGreen)
-                    break;
-                
-                default: return null
-           }
-           i++;
+            findNumberOfClick(randomNumber, newListofClicks, difficulty-200);          
            //checking count of clicks
-            if(i===currentRound) {
+            if(newListofClicks.length === currentRound) {
                 // write list of random clicks
-                writingListClicks(newListId);
+                writingListClicks(newListofClicks);
                 // user can clicks at carousel
                 setClicksAvailable('available');
                 // clear interval of do clicks
@@ -101,7 +76,6 @@ const GameBlockContainer =(props) => {
                 changeStatusOfButton('in process');
                 //do button active
                 setButtonDisabled(false);                
-                console.log('Заданная комбинация', newListId);
                 setDuringGame(true);
             }
         }, difficulty)
@@ -109,40 +83,12 @@ const GameBlockContainer =(props) => {
 
     // user click on the buttons
     function onClickButton(event) {
-        console.log('Текущая комбинация', listId)
-        function outClicked(fu){
-            setTimeout(() => fu(''), 500)
-        }
-        switch(event.target.id) {
-            case('2'):
-                playSound1()
-                onClickRed('red-clicked');
-                listId.push(...event.target.id);
-                outClicked(onClickRed);
-                break;
-            case('1'):
-                playSound2()
-                onClickBlue('blue-clicked');
-                listId.push(...event.target.id);
-                outClicked(onClickBlue)
-                break;
-            case('3'):
-                playSound3()
-                onClickYellow('yellow-clicked');
-                listId.push(...event.target.id);
-                outClicked(onClickYellow)
-                break;
-            case('4'):
-                playSound4()
-                onClickGreen('green-clicked');
-                listId.push(...event.target.id);
-                outClicked(onClickGreen)
-                break;            
-            default: return null
-       }
+        findNumberOfClick(event.target.id, listOfClicks, 500)
        // user click at the right carousel button
        if (event.target.id === listClicks[currentMoveNumber]) {           
            nextMoveNumber(currentMoveNumber + 1);
+
+           //finish this round of the game
            if (currentMoveNumber + 1 === round) { 
                setNextRound(round + 1);
                setClicksAvailable('')
@@ -152,22 +98,47 @@ const GameBlockContainer =(props) => {
             } 
        }
 
+       //used did wrong move, the game is over
        else {setClicksAvailable(''); wrongMove(); setDuringGame(false); setLastRound(round); setNextRound(1)}
-    }   
+    } 
 
-    const StartButton = () => {
-        let buttonText=''
-        statusOfButton === 'ready' ? buttonText='Start' : buttonText='Restart';
-        return (
-            <Fragment>
-                <button onClick={onButtonClick} disabled={buttonDisabled}>{buttonText} </button>
-                <p className={finishText}>Unfortunately you made the wrong move!<br/> Your result: {lastRound} level(s)</p>
-                <p className={successText}>This round is completed!<br/>Press Start to continue</p>
-            </Fragment>
-        )
+    // uni function to find number of click and do effect of click
+    function findNumberOfClick(target, list, ms) {
+
+        //little pause after click effect
+        function outClicked(fu){
+            setTimeout(() => fu(''), ms)
+        }    
+
+        switch(target) {
+            case('2'):
+                playSound1()
+                onClickRed('red-clicked');
+                list.push(...target);
+                outClicked(onClickRed);
+                break;
+            case('1'):
+                playSound2()
+                onClickBlue('blue-clicked');
+                list.push(...target);
+                outClicked(onClickBlue)
+                break;
+            case('3'):
+                playSound3()
+                onClickYellow('yellow-clicked');
+                list.push(...target);
+                outClicked(onClickYellow)
+                break;
+            case('4'):
+                playSound4()
+                onClickGreen('green-clicked');
+                list.push(...target);
+                outClicked(onClickGreen)
+                break;            
+            default: return null
+       }
     }
 
- 
     return (
         <div className="game-block">            
                 <ul onClick={onClickButton}>
@@ -179,7 +150,7 @@ const GameBlockContainer =(props) => {
                 </ul>            
             <div className="game-block__right-side">
                 <RoundCount round={round}/>
-                <StartButton />
+                <StartButton statusOfButton={statusOfButton} onStartButtonClick={onStartButtonClick} buttonDisabled={buttonDisabled} lastRound={lastRound}/>
                 <DifficultyLevel onChangeDifficulty={onChangeDifficulty} difficultyCheckbox={difficultyCheckbox}/>
             </div>
             
@@ -191,7 +162,8 @@ const mapStateToProps = (state) => {
     return state
 }
 
-const mapDispatchToProps =(dispatch) => {      
+const mapDispatchToProps =(dispatch) => {   
+       
     return {
       writingListClicks: (data) => dispatch(writeListClicks(data)),
       onChangeDifficulty: (item) => dispatch(changeDifficulty(item)),
@@ -203,4 +175,4 @@ const mapDispatchToProps =(dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameBlockContainer)
+export default React.memo(connect(mapStateToProps, mapDispatchToProps)(GameBlockContainer))

@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "../../store";
 import  GameBlockContainer from "../game-block/game-block";
 const App = () => {
+    
     return (
         <Provider store={store}>
             <Header />
