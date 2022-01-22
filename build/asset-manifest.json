@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/simon-the-game-react/static/css/main.46b66078.css",
-    "main.js": "/simon-the-game-react/static/js/main.9239859d.js",
-    "index.html": "/simon-the-game-react/index.html",
-    "main.46b66078.css.map": "/simon-the-game-react/static/css/main.46b66078.css.map",
-    "main.9239859d.js.map": "/simon-the-game-react/static/js/main.9239859d.js.map"
+    "main.css": "/simon_the_game_react/static/css/main.c5df941e.css",
+    "main.js": "/simon_the_game_react/static/js/main.9239859d.js",
+    "index.html": "/simon_the_game_react/index.html",
+    "main.c5df941e.css.map": "/simon_the_game_react/static/css/main.c5df941e.css.map",
+    "main.9239859d.js.map": "/simon_the_game_react/static/js/main.9239859d.js.map"
   },
   "entrypoints": [
-    "static/css/main.46b66078.css",
+    "static/css/main.c5df941e.css",
     "static/js/main.9239859d.js"
   ]
 }

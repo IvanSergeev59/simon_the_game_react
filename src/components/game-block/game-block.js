@@ -2,6 +2,12 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { useState } from "react";
 import { writeListClicks,changeDifficulty, finishGame, clearWrongMoveText, clearSuccessText, showSuccessText } from "../../actions";
+import useSound from 'use-sound';
+import sound1 from '../../sounds/sound1.mp3';
+import sound2 from '../../sounds/sound2.mp3';
+import sound3 from '../../sounds/sound3.mp3';
+import sound4 from '../../sounds/sound4.mp3';
+
 
 const GameBlockContainer =(props) => {
     const [basedRed, onClickRed] = useState('');
@@ -16,6 +22,11 @@ const GameBlockContainer =(props) => {
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [duringGame, setDuringGame] = useState(false);
     const [lastRound, setLastRound] = useState(0);
+    const [playSound1] = useSound(sound1);
+    const [playSound2] = useSound(sound2);
+    const [playSound3] = useSound(sound3);
+    const [playSound4] = useSound(sound4);
+
 
    const {difficulty, difficultyCheckbox, listClicks, finishText, successText} = props.gameParams;
    const {writingListClicks, onChangeDifficulty,  clearWrongMoveText, showSuccessText,  clearSuccessText, wrongMove} = props;
@@ -56,20 +67,24 @@ const GameBlockContainer =(props) => {
                     onClickRed('red-clicked');
                     newListId.push(...'2');
                     outClicked(onClickRed);
+                    playSound1()
                     break;
                 case(1):
                     onClickBlue('blue-clicked');
                     newListId.push(...'1');
+                    playSound2()
                     outClicked(onClickBlue)
                     break;
                 case(3):
                     onClickYellow('yellow-clicked');
                     newListId.push(...'3');
+                    playSound3()
                     outClicked(onClickYellow)
                     break;
                 case(4):
                     onClickGreen('green-clicked');
                     newListId.push(...'4');
+                    playSound4()
                     outClicked(onClickGreen)
                     break;
                 
@@ -102,21 +117,25 @@ const GameBlockContainer =(props) => {
         }
         switch(event.target.id) {
             case('2'):
+                playSound1()
                 onClickRed('red-clicked');
                 listId.push(...event.target.id);
                 outClicked(onClickRed);
                 break;
             case('1'):
+                playSound2()
                 onClickBlue('blue-clicked');
                 listId.push(...event.target.id);
                 outClicked(onClickBlue)
                 break;
             case('3'):
+                playSound3()
                 onClickYellow('yellow-clicked');
                 listId.push(...event.target.id);
                 outClicked(onClickYellow)
                 break;
             case('4'):
+                playSound4()
                 onClickGreen('green-clicked');
                 listId.push(...event.target.id);
                 outClicked(onClickGreen)

@@ -331,6 +331,10 @@
 }
 
 @media (max-width: 500px) {
+  .game-block {
+    margin-top: 15vh;
+    margin-bottom: 15vh;
+  }
   .game-block ul {
     width: 150px;
     margin-top: 30px;
