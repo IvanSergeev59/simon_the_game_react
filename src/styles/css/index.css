@@ -350,6 +350,10 @@
   padding-bottom: 20px;
 }
 
+.created-by a {
+  color: black;
+}
+
 @media (min-width: 500px) and (max-width: 700px) {
   .created-by {
     width: 80%;

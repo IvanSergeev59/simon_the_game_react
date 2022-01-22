@@ -1,6 +1,6 @@
 const CreatedBy = () => {
     return (
-        <p className="created-by">Created by Ivan Sergeev</p>
+        <p className="created-by"><a href="https://ivan-sergand.ru/">Created by Ivan Sergeev</a></p>
     )
 }
 
