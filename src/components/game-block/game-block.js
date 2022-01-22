@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { useState } from "react";
 import { writeListClicks,changeDifficulty, finishGame, clearWrongMoveText, clearSuccessText, showSuccessText } from "../../actions";
 import useSound from 'use-sound';
-import sound1 from '../../sounds/sound1.mp3';
-import sound2 from '../../sounds/sound2.mp3';
-import sound3 from '../../sounds/sound3.mp3';
-import sound4 from '../../sounds/sound4.mp3';
-
+import {sound1, sound2, sound3, sound4} from '../sounds';
+import RoundCount from "../round-count";
+import DifficultyLevel from "../difficulty-level";
+console.log('render')
 
 const GameBlockContainer =(props) => {
+    console.log('render mainBlock')
     const [basedRed, onClickRed] = useState('');
     const [basedGreen, onClickGreen] = useState('');
     const [basedBlue, onClickBlue] = useState('');
@@ -30,9 +30,7 @@ const GameBlockContainer =(props) => {
 
    const {difficulty, difficultyCheckbox, listClicks, finishText, successText} = props.gameParams;
    const {writingListClicks, onChangeDifficulty,  clearWrongMoveText, showSuccessText,  clearSuccessText, wrongMove} = props;
-   function ololo(event) {
-        onChangeDifficulty(event.target.id)
-   }
+  
 
     // user press start, creating random list of clicks 
     function onButtonClick() {
@@ -142,14 +140,10 @@ const GameBlockContainer =(props) => {
                 break;            
             default: return null
        }
-       console.log('Текущая комбинация', listId);
-       console.log('Номер хода', currentMoveNumber)
-       console.log('Текущий клик',event.target.id, "требуемый клик", listClicks[currentMoveNumber])
        // user click at the right carousel button
        if (event.target.id === listClicks[currentMoveNumber]) {           
            nextMoveNumber(currentMoveNumber + 1);
            if (currentMoveNumber + 1 === round) { 
-            console.log('Текущая комбинация', listId)
                setNextRound(round + 1);
                setClicksAvailable('')
                changeStatusOfButton('ready');
@@ -159,12 +153,7 @@ const GameBlockContainer =(props) => {
        }
 
        else {setClicksAvailable(''); wrongMove(); setDuringGame(false); setLastRound(round); setNextRound(1)}
-    }
-   const RoundCount = () => {
-        return (
-            <h3>Round: {round}</h3>
-        )
-    }
+    }   
 
     const StartButton = () => {
         let buttonText=''
@@ -178,20 +167,7 @@ const GameBlockContainer =(props) => {
         )
     }
 
-    const DifficultyLevel = () => {
-        return (
-            <div onChange={(event) => ololo(event)}>
-                <h3>Difficulty level</h3>   
-                <input type="radio" defaultChecked={difficultyCheckbox[0]} id="difficultyChoice-1" name="difficultyChoice"
-                  />
-                <label htmlFor="difficultyChoice-1" >Easy (1.5 sec interval)</label><br />
-                <input type="radio" id="difficultyChoice-2" name="difficultyChoice" defaultChecked={difficultyCheckbox[1]}/>
-                <label htmlFor="difficultyChoice-2">Medium (1 sec interval)</label><br />
-                <input type="radio" id="difficultyChoice-3" name="difficultyChoice" defaultChecked={difficultyCheckbox[2]}/> 
-                <label htmlFor="difficultyChoice-3">Hard (0.4 sec interval)</label>
-            </div>
-        )
-    }   
+ 
     return (
         <div className="game-block">            
                 <ul onClick={onClickButton}>
@@ -199,28 +175,23 @@ const GameBlockContainer =(props) => {
                     <li className={`game-block__blue ${basedBlue}`} id="1"></li>
                     <li className={`game-block__red ${basedRed}`} id="2"></li>
                     <li className={`game-block__yellow ${basedYellow}`} id="3"></li>
-                    <li className={`game-block__green ${basedGreen}`} id="4"></li>
-                    
-                </ul>
-            
+                    <li className={`game-block__green ${basedGreen}`} id="4"></li>                    
+                </ul>            
             <div className="game-block__right-side">
-                <RoundCount />
+                <RoundCount round={round}/>
                 <StartButton />
-                <DifficultyLevel />
+                <DifficultyLevel onChangeDifficulty={onChangeDifficulty} difficultyCheckbox={difficultyCheckbox}/>
             </div>
             
         </div>
-        )
-    
+        )    
     }   
-
 
 const mapStateToProps = (state) => {
     return state
 }
 
-const mapDispatchToProps =(dispatch) => {
-      
+const mapDispatchToProps =(dispatch) => {      
     return {
       writingListClicks: (data) => dispatch(writeListClicks(data)),
       onChangeDifficulty: (item) => dispatch(changeDifficulty(item)),
